@@ -25,6 +25,8 @@ def difficultySetup():
 	print('______')
 
 	print('*Please choose difficulty level 0 - 100:')
+	print('0 - Hardest')
+	print('100 - Easiest')
 	choice = int(input('Type difficulty level: '))
 
 	if not re.match('^[0-9]+$', str(choice)) and choice <= 0 and choice >= 100:
