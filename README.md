@@ -17,6 +17,6 @@ Nim game written in Python
 
 - ~~Allow 2 player mode (hot spot)~~ Done!
 - Add GUI
-- Add difficulty levels
+- ~~Add difficulty levels~~ Done!
 
 -- Written by Marian Radev
