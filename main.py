@@ -17,14 +17,15 @@ board = [1,3,5,7]
 aiMovesHistory = []
 playerMovesHistory = []
 
-
-def difficultySetup():
+def clearConsole():
 	os.system('cls' if os.name == 'nt' else 'clear')
 
+def difficultySetup():
+	clearConsole()
 	global difficulty
 	print('______')
 
-	print('*Please choose difficulty level 0 - 100:')
+	print('*Please choose % chance of winning (difficulty) level 0 - 100:')
 	print('0 - Hardest')
 	print('100 - Easiest')
 	choice = int(input('Type difficulty level: '))
@@ -257,7 +258,7 @@ if(mode == 1):
 			remove()
 		else:
 			# Clear old consonsole
-			os.system('cls' if os.name == 'nt' else 'clear')
+			clearConsole()
 			aiMove()
 		
 		checkWin()
@@ -269,7 +270,7 @@ else:
 
 		else:
 			# Clear old consonsole
-			os.system('cls' if os.name == 'nt' else 'clear')
+			clearConsole()
 			remove()
 
 		
