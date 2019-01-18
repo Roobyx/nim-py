@@ -15,7 +15,7 @@ Nim game written in Python
 
 ## TODO:
 
-- ~~Allow 2 player mode (hot spot)~~
+- ~~Allow 2 player mode (hot spot)~~ Done!
 - Add GUI
 - Add difficulty levels
 

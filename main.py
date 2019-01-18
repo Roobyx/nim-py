@@ -2,12 +2,13 @@ from operator import xor
 import sys
 import os
 import re
+import random
 
 # Modes:
 # 1 - vs AI
 # 2 - Hotspot (2 player mode)
 mode = 1
-difficulty = 1
+difficulty = 0
 
 currentPlayer = 1
 playerVictory = False
@@ -17,21 +18,37 @@ aiMovesHistory = []
 playerMovesHistory = []
 
 
-def gameSetup():
-	global mode
+def difficultySetup():
+	os.system('cls' if os.name == 'nt' else 'clear')
 
-	print('Please choose mode 1 or 2:')
+	global difficulty
+	print('______')
+
+	print('*Please choose difficulty level 0 - 100:')
+	choice = int(input('Type difficulty level: '))
+
+	if not re.match('^[0-9]+$', str(choice)) and choice <= 0 and choice >= 100:
+		print("Error! Only in the range 0-100 please!")
+		difficultySetup()
+	else:
+		difficulty = choice
+	
+
+def modeSetup():
+	global mode
+	print('______')
+	print('**Please choose mode 1 or 2:')
 	print('1 - vs AI')
 	print('2 - vs Player')
 	choice = int(input('Type mode: '))
 
 	if not re.match('^[1-2]+$', str(choice)):
 		print("Error! There are 2 modes!")
-		gameSetup()
+		modeSetup()
 	else:
-		if choice == 1
-			mode = choice
-
+		mode = choice
+		if choice == 1:
+			difficultySetup()
 
 
 
@@ -139,61 +156,87 @@ def aiMove():
 	foundBalanced = False
 	rowTraversed = 0
 
-	if(isBalanced(tempList)):
-		# print('Stupid move needed')
-		if(tempList[0]) > 0:
-			tempList[0] -= 1
-			board = tempList.copy()
-			# print('Move made 1')
 
-		elif(tempList[1] > 0):
-			tempList[1] -= 1
-			board = tempList.copy()
-			# print('Move made 2')
+	if random.randint(0,100) > difficulty:
+		# print('DIFFICULTY: ', difficulty)
+		if(isBalanced(tempList)):
+			# print('Stupid move needed')
+			if(tempList[0]) > 0:
+				tempList[0] -= 1
+				board = tempList.copy()
+				# print('Move made 1')
 
-		elif(tempList[2] > 0):
-			tempList[2] -= 1
-			board = tempList.copy()
-			# print('Move made 3')
+			elif(tempList[1] > 0):
+				tempList[1] -= 1
+				board = tempList.copy()
+				# print('Move made 2')
 
-		elif(tempList[3] > 0):
-			tempList[3] -= 1
-			board = tempList.copy()
-			# print('Move made 4')
+			elif(tempList[2] > 0):
+				tempList[2] -= 1
+				board = tempList.copy()
+				# print('Move made 3')
 
-	else:
-		# print('Balancing attempt')
+			elif(tempList[3] > 0):
+				tempList[3] -= 1
+				board = tempList.copy()
+				# print('Move made 4')
 
-		for row in range(4):
-			amount = 0
-			rowTraversed += 1
-			if(tempList[row] > 0):
-				for v in range(tempList[row]):
-					tempList[row] -= 1
-					amount += 1
-					# print('Checking: ', tempList[0], tempList[1], tempList[2], tempList[3])
+		else:
+			# print('Balancing attempt')
 
-					if(isBalanced(tempList)):
-						foundBalanced = True
-						aiMoveMessave = 'AI removed: ' + str(amount) + ' From row: ' + str(rowTraversed)
-						aiMovesHistory.append(aiMoveMessave)
-						board = tempList.copy()
-						# print('break 1')
-						break
-					# else:
-						# print('Failed attempt')
-						
-					if(tempList[row] == 0):
-						# Reseting row
-						# print('Reseting row')
-						tempList = board.copy()
-						# print('Should be reset: ', tempList[0], tempList[1], tempList[2], tempList[3])
-				if(foundBalanced):
-					break
-
+			for row in range(4):
 				amount = 0
-	logLastMove('ai')
+				rowTraversed += 1
+				if(tempList[row] > 0):
+					for v in range(tempList[row]):
+						tempList[row] -= 1
+						amount += 1
+						# print('Checking: ', tempList[0], tempList[1], tempList[2], tempList[3])
 
+						if(isBalanced(tempList)):
+							foundBalanced = True
+							aiMoveMessave = 'AI removed: ' + str(amount) + ' From row: ' + str(rowTraversed)
+							aiMovesHistory.append(aiMoveMessave)
+							board = tempList.copy()
+							# print('break 1')
+							break
+						# else:
+							# print('Failed attempt')
+							
+						if(tempList[row] == 0):
+							# Reseting row
+							# print('Reseting row')
+							tempList = board.copy()
+							# print('Should be reset: ', tempList[0], tempList[1], tempList[2], tempList[3])
+					if(foundBalanced):
+						break
+
+					amount = 0
+		logLastMove('ai')
+	else:
+		# print('WRONG CHOICE: ', difficulty)
+		
+		if(isBalanced(tempList)):
+			# print('Stupid move needed')
+			if(tempList[0]) > 0:
+				tempList[0] -= 1
+				board = tempList.copy()
+				# print('Move made 1')
+
+			elif(tempList[1] > 0):
+				tempList[1] -= 1
+				board = tempList.copy()
+				# print('Move made 2')
+
+			elif(tempList[2] > 0):
+				tempList[2] -= 1
+				board = tempList.copy()
+				# print('Move made 3')
+
+			elif(tempList[3] > 0):
+				tempList[3] -= 1
+				board = tempList.copy()
+				# print('Move made 4')
 
 # ------------------------------------
 # GAME START
@@ -201,7 +244,8 @@ def aiMove():
 
 
 # Choose the mode
-gameSetup()
+modeSetup()
+
 
 # Draw result board
 if(mode == 1):
