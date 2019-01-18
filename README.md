@@ -13,9 +13,9 @@ Nim game written in Python
 - Currently the human player starts the game (which makes him in absolute disadvantage and should result in a loss 100% of the games)
 - No GUI
 
-# TODO:
+## TODO:
 
-- Allow 2 player mode (hot spot)
+- ~~Allow 2 player mode (hot spot)~~
 - Add GUI
 - Add difficulty levels
 

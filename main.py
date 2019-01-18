@@ -3,12 +3,37 @@ import sys
 import os
 import re
 
+# Modes:
+# 1 - vs AI
+# 2 - Hotspot (2 player mode)
+mode = 1
+difficulty = 1
+
 currentPlayer = 1
 playerVictory = False
 gameRunning = True
 board = [1,3,5,7]
 aiMovesHistory = []
 playerMovesHistory = []
+
+
+def gameSetup():
+	global mode
+
+	print('Please choose mode 1 or 2:')
+	print('1 - vs AI')
+	print('2 - vs Player')
+	choice = int(input('Type mode: '))
+
+	if not re.match('^[1-2]+$', str(choice)):
+		print("Error! There are 2 modes!")
+		gameSetup()
+	else:
+		if choice == 1
+			mode = choice
+
+
+
 
 def changePlayer():
 	global currentPlayer
@@ -55,10 +80,14 @@ def getCorrectRow():
 	row = int(input('--> Row to remove from: '))
 
 	if not re.match('^[1-4]+$', str(row)):
-		print("Error! We have 4 rows!")
+		print("Error! There are 4 rows!")
 		getCorrectRow()
 	else:
-		return row-1
+		if(board[row-1] < 1):
+			print("Error! That row is empty!")
+			getCorrectRow()
+		else:
+			return row-1
 
 def getCorrectAmount(row):
 	amount = int(input('--> Amount to remove: '))
@@ -67,12 +96,13 @@ def getCorrectAmount(row):
 		print("Error! Illegal amount!")
 		getCorrectAmount(row)
 	else:
-		print('Correct: ', amount)
 		return amount
 
 
 def remove():
-	print('Player\'s turn!')
+	print('Player ' + str(currentPlayer) + '\'s turn!')
+	drawGame(board)
+	
 	row = getCorrectRow()
 	amount = getCorrectAmount(row)
 
@@ -80,7 +110,6 @@ def remove():
 
 	playerMovemessage = 'Player removed: ' + str(amount) + ' From row: ' + str(row)
 	playerMovesHistory.append(playerMovemessage)
-	drawGame(board)
 
 def checkWin():
 	global gameRunning
@@ -92,9 +121,12 @@ def checkWin():
 	
 	print('----------------------------')
 	if(currentPlayer == 1):
-		print('Player Won!')
+		print('Player 1 Won!')
 	else:
-		print('AI Won!')
+		if mode == 1:
+			print('AI Won!')
+		else:
+			print('Player 2 Won!')
 	print('----------------------------')
 
 	gameRunning = False
@@ -129,9 +161,6 @@ def aiMove():
 			board = tempList.copy()
 			# print('Move made 4')
 
-		else:
-			print('You won!')
-			playerVictory = True
 	else:
 		# print('Balancing attempt')
 
@@ -165,17 +194,37 @@ def aiMove():
 				amount = 0
 	logLastMove('ai')
 
+
+# ------------------------------------
+# GAME START
+# ------------------------------------
+
+
+# Choose the mode
+gameSetup()
+
 # Draw result board
-# while gameRunning:
-# 	drawGame(board)
+if(mode == 1):
+	# vs AI setup
+	while gameRunning:
+		if(currentPlayer == 1):
+			remove()
+		else:
+			# Clear old consonsole
+			os.system('cls' if os.name == 'nt' else 'clear')
+			aiMove()
+		
+		checkWin()
+else:
+	# 2 player mode setup
+	while gameRunning:
+		if(currentPlayer == 1):
+			remove()
 
-# 	if(currentPlayer == 1):
-# 		remove()
-# 	else:
-# 		# Clear old consonsole
-# 		os.system('cls' if os.name == 'nt' else 'clear')
-# 		aiMove()
-	
-# 	checkWin()
+		else:
+			# Clear old consonsole
+			os.system('cls' if os.name == 'nt' else 'clear')
+			remove()
 
-getCorrectAmount(1)
+		
+		checkWin()
